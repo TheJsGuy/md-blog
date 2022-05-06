@@ -125,3 +125,5 @@ flowchart LR;
    GW--static assets-->CDN
   end
 ```
+
+{% include mermaid.html %}
