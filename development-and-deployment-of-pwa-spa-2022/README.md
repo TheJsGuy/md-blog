@@ -109,21 +109,41 @@ flowchart LR;
 
 ## Production/Staging
 
+
 ```mermaid
-flowchart LR;
-  subgraph cloud
-   DO[Docker Image]-->CD[ECS/EKS]
-   CD-->LB[Load Balancer]
-   LB-->GW[Cloud Gateway]
-   CDN-->GW
-   GW-->I[Internet]
-  end
-  subgraph user request
-   U[Web Browser]-->I
-   I--index.html-->U
-   U--static assets-->GW
-   GW--static assets-->CDN
-  end
+sequenceDiagram
+    actor B as Web Browser
+    participant N as Node.JS Server
+    participant W as Dist
+    participant S as CDN
+    
+    B->>N: Request index.html
+    activate N
+    N-->>W: Read index.html
+    N-->>W: Read app.js
+    activate N
+    N->>N: Render app.js to string
+    deactivate N
+    activate N
+    N->>N: Place rendered string inside index.html
+    deactivate N
+    N->>B: Respond with rendered index.html
+    deactivate N
+    
+    B->>N: Request static assets linked to index.html
+    activate N
+    N-->>W: Read Static assets
+    N->>B: Respond with static assets
+    Deactivate N
+    
+    B->>B: Hydrate DOM
+    
+    rect rgba(0,0,0,0.05)
+     note right of B: Download static assets
+     S-->>B: *.js assets
+     S-->>B: *.png|jpg|jpeg|bmp
+     S-->>B: *.scss|css|less
+    end
 ```
 
 {% include mermaid.html %}
