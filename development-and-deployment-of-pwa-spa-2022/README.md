@@ -130,20 +130,16 @@ sequenceDiagram
     N->>B: Respond with rendered index.html
     deactivate N
     
-    B->>N: Request static assets linked to index.html
-    activate N
-    N-->>W: Read Static assets
-    N->>B: Respond with static assets
-    Deactivate N
     
-    B->>B: Hydrate DOM
-    
+    B->>S: Request static assets linked to index.html
     rect rgba(0,0,0,0.05)
      note right of B: Download static assets
      S-->>B: *.js assets
      S-->>B: *.png|jpg|jpeg|bmp
      S-->>B: *.scss|css|less
     end
+    
+    B->>B: Hydrate DOM
 ```
 
 {% include mermaid.html %}
